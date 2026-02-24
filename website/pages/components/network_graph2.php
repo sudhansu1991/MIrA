@@ -44,7 +44,7 @@ function networkGraph2($results) {
       }
     }
 
-    // join origins to provenances
+    // create edges to connect origin to provenance
     if ($checkOriginPlaces && $checkProvPlaces) {
       foreach ($checkOriginPlaces as $origin) {
         foreach ($checkProvPlaces as $prov) {
@@ -205,7 +205,7 @@ toggleFixed(document.getElementById('btnToggleFixed'));
 // custom actions
 
 // go to link on double click
-network.on("doubleClick", function (params) {
+network.on('doubleClick', function (params) {
   if (params.nodes.length > 0) {
     // A node was double-clicked
     let nodeId = params.nodes[0];
@@ -299,9 +299,10 @@ function edgeString2($edge) {
       $str = '{
         from: "' . $edge[0] . '", 
         to: "' . $edge[1] . '",
+        label: "' . $label . '",
         arrows: "from", 
         color: { color: "rgba(150, 255, 150, 25)" }, 
-        width: 6
+        width: 8
       },' . "\n";
       break;
     case 'library':

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <manuscript id="269">
    <identifier libraryID="augsburg">
-      <shelfmark>1</shelfmark>
+      <shelfmark>2</shelfmark>
    </identifier>
    <description>
       <type />
@@ -29,5 +29,6 @@
       </notes>
    <revisionDesc>
       <change who="Pádraic Moran" when="2021-05-01">Created</change>
+      <change who="Pádraic Moran" when="2061-02-03">Corrected shelfmark</change>
    </revisionDesc>
 </manuscript>
