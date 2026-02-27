@@ -152,8 +152,8 @@ function listMSS($results) {
 	chartDates($resultsSorted);
 	chartSizes($resultsSorted);
 	chartFolios($resultsSorted);
-	if (cleanInput('model') == '2') networkGraph2($resultsSorted);
-	else networkGraph1($resultsSorted);
+	if (cleanInput('model') == '1') networkGraph1($resultsSorted);
+	networkGraph2($resultsSorted);
 }
 
 

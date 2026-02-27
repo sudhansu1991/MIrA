@@ -1,17 +1,12 @@
 <?php
 /* 
 Network graph
-Needs to be rewritten:
-- JavaScript should load data dynamically via separate PHP file.
-- All graph config info should captured in the PHP and processed in JavaScript.
-- Graph interface should give an option of two data sources (old and new models).
 */
 require_once 'network_graph_common.php';
 
 function networkGraph1($results) {
   global $placeInfo, $libraries;
   $showLibraries = false;
-  if (cleanInput('lib') == 'y') $showLibraries = true;
 
   print '<h3 id="network" class="mt-5 pt-2">Network graph</h3>';
   if (sizeof($results) > 50) print '<p id="slowLoadWarning" class="bg-warning rounded py-1 px-3">Large result sets may take several seconds to draw.</p>';
@@ -29,15 +24,6 @@ function networkGraph1($results) {
   foreach($results as $ms) {
     $msID = strval($ms['id']);
 
-    // add a node for this MS
-    array_push($nodeList, array(
-      $msID, 
-      makeMsHeading($ms),
-      null, 
-      null, 
-      'ms'
-    ));
-
     // check origin place(s) for this manuscript
     $checkOriginPlaces = $ms->xpath ('//manuscript[@id="' . $msID  . '"]//origin/place/@id');
     if ($checkOriginPlaces) {
@@ -49,6 +35,15 @@ function networkGraph1($results) {
         array_push($edgeList, array($msID, $place['id'], 'origin', $originWeight, 'origin'));
       }
     }
+
+    // add a node for this MS
+    array_push($nodeList, array(
+      $msID, 
+      makeMsHeading($ms),
+      null, 
+      null, 
+      'ms'
+    ));
 
     // check provenance place(s) for this manuscript
     $checkProvPlaces = $ms->xpath ('//manuscript[@id="' . $msID  . '"]//provenance/place/@id');
@@ -123,8 +118,9 @@ function networkGraph1($results) {
 <button class="btn btn-secondary" onclick="fullScreen(document.getElementById('networkGraph'));">Full screen</button>
 </div>
 
-<p>Black or grey arrows indicate origin, blue arrows indicate provenance.
+<p>Blue arrows indicate primary movement (from place of origin), red arrows secondary movement (from place of provenance).
 Medieval places are in green, modern libraries in pink.
+Lines are more transparent when there are multiple options.
 Double-click any node for more information.
 </p>
 
@@ -178,9 +174,18 @@ var options = {
       size: 25
     }
   },
+  edges: {
+    font: {
+      color: 'black',
+      size: 25,
+      background: "rgba(255,255,255,0.8)",
+      align: "top"
+    }
+  },
   physics: {
     solver: "forceAtlas2Based",
     forceAtlas2Based: {
+      springConstant: 0.01,
       springLength: 100
     },
     minVelocity: 0.75
@@ -195,10 +200,20 @@ toggleFixed(document.getElementById('btnToggleFixed'));
 
 // go to link on double click
 network.on('doubleClick', function (params) {
-  thisNode = params.nodes[0];
-  if (thisNode != undefined) {
-    url = data.nodes.get(thisNode).url;
-    if (url != undefined) window.location.href = url;
+  if (params.nodes.length > 0) {
+    // A node was double-clicked
+    let nodeId = params.nodes[0];
+    let node = data.nodes.get(nodeId);
+    if (node && node.url) {
+      window.location.href = node.url;
+    }
+  } else if (params.edges.length > 0) {
+    // An edge was double-clicked
+    let edgeId = params.edges[0];
+    let edge = data.edges.get(edgeId);
+    if (edge && edge.url) {
+      window.location.href = edge.url;
+    }
   }
 });
 
@@ -260,7 +275,7 @@ function edgeString1($edge) {
         to: "' . $edge[1] . '",
         label: "' . $label . '",
         arrows: "from", 
-        color: { color: "rgba(0, 0, 0, ' . $edge[3] . ')" }, 
+        color: { color: "rgba(50, 50, 200, ' . $edge[3] . ')" }, 
         width: 2
       },' . "\n";
       break;
@@ -270,7 +285,7 @@ function edgeString1($edge) {
         to: "' . $edge[1] . '",
         label: "' . $label . '",
         arrows: "to", 
-        color: { color: "rgba(0, 0, 204, ' . $edge[3] . ')" }, 
+        color: { color: "rgba(200, 50, 50, ' . $edge[3] . ')" }, 
         width: 2
       },' . "\n";
       break;

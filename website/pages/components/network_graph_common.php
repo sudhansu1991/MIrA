@@ -3,6 +3,9 @@
 Network graph: common functions
 */
 
+
+
+
 // take coords string and return x, y values, adjusted for graph canvas
 function processCoords($strCoords) {
   $coords = explode(',', $strCoords);
