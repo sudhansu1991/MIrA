@@ -14,7 +14,6 @@ This script builds a directed graph from:
 - manuscript edges + place-hierarchy edges
 
 It then computes standard network metrics and saves them as CSV tables.
-There is NO heatmap / plotting in this version (CSV export only).
 
 Inputs (CSV, keep them in the same folder as this script)
 ---------------------------------------------------------
