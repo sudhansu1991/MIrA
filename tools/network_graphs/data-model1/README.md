@@ -1,7 +1,7 @@
 # Model 1 — Network metrics (places ↔ manuscripts + place hierarchy)
 
 This folder contains a small, self-contained workflow for **computing network metrics** for the MIrA *Model 1* graph (place nodes + manuscript nodes + place-hierarchy links).  
-It produces **CSV tables** (no plotting) that can be opened in Excel or analysed in Python/R.
+It produces **CSV tables** that can be opened in Excel or analysed in Python/R.
 
 ## Contents
 
