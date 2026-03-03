@@ -29,5 +29,5 @@ It produces **CSV tables** that can be opened in Excel or analysed in Python/R.
 Open **Command Prompt** or **Git Bash**, then:
 
 ```bash
-cd /c/Users/Sudhansu/MIrA/tools/network_graphs/data-model1
+
 python network_metrics_model1.py
